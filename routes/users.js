@@ -5,6 +5,7 @@
 const jsonschema = require("jsonschema");
 
 const express = require("express");
+const multer = require("multer");
 const { BadRequestError } = require("../expressError");
 const User = require("../models/user");
 const { createToken } = require("../helpers/tokens");
@@ -48,10 +49,16 @@ const router = express.Router();
     const errs = validator.errors.map(e => e.stack);
     throw new BadRequestError(errs);
   }
-
+  console.log("req.body--->", req.body);
+  console.log("req.files--->", req.files);
   const newUser = await User.register({ ...req.body });
   const token = createToken(newUser);
   return res.status(201).json({ token });
+});
+
+router.post("/image", async function (req, res, next) {
+
+  console.log("req.files--->", req.files);
 });
 
 module.exports = router;
