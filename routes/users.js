@@ -44,21 +44,23 @@ const router = express.Router();
  */
 
  router.post("/register", async function (req, res, next) {
-  const validator = jsonschema.validate(req.body, userRegisterSchema);
-  if (!validator.valid) {
-    const errs = validator.errors.map(e => e.stack);
-    throw new BadRequestError(errs);
-  }
-  console.log("req.body--->", req.body);
-  console.log("req.files--->", req.files);
-  const newUser = await User.register({ ...req.body });
-  const token = createToken(newUser);
-  return res.status(201).json({ token });
+   console.log(`this is the api request received ---> `, req);
+   console.log(`REGISTER backend req.files--> `, req.files)
+  // const validator = jsonschema.validate(req.body, userRegisterSchema);
+  // if (!validator.valid) {
+  //   const errs = validator.errors.map(e => e.stack);
+  //   throw new BadRequestError(errs);
+  // }
+  // console.log("req.body--->", req.body);
+  // console.log("req.files--->", req.files);
+  // const newUser = await User.register({ ...req.body });
+  // const token = createToken(newUser);
+  // return res.status(201).json({ token });
 });
 
-router.post("/image", async function (req, res, next) {
+// router.post("/image", async function (req, res, next) {
 
-  console.log("req.files--->", req.files);
-});
+//   console.log("req.files--->", req.files);
+// });
 
 module.exports = router;
