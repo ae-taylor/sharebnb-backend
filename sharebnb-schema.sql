@@ -3,7 +3,7 @@ CREATE TABLE users (
   password TEXT NOT NULL,
   first_name VARCHAR(25) NOT NULL,
   last_name VARCHAR(25) NOT NULL,
-  email VARCHAR(40) NOT NULL CHECK 
+  email VARCHAR(50) NOT NULL CHECK 
     (position('@' IN email) > 1),
   phone VARCHAR(15) NOT NULL
 );

@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/newListing.json",
+    "type": "object",
+    "properties": {
+      "host_username": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 25
+      },
+      "title": {
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 70
+      },
+      "description": {
+        "type": "string",
+        "minLength": 20,
+        "maxLength": 400
+      },
+      "price": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 10
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "host_username",
+      "title",
+      "description",
+      "price"
+    ]
+  }
+  
