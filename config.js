@@ -8,6 +8,8 @@ require("colors");
 const SECRET_KEY = process.env.SECRET_KEY || "secret-dev";
 const S3_ACCESS_KEY = process.env.S3_ACCESS_KEY;
 const S3_SECRET_KEY = process.env.S3_SECRET_KEY;
+const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
+const S3_REGION = process.env.S3_REGION;
 
 const PORT = +process.env.PORT || 3001;
 
@@ -34,6 +36,8 @@ module.exports = {
   SECRET_KEY,
   S3_ACCESS_KEY,
   S3_SECRET_KEY,
+  S3_REGION,
+  S3_BUCKET_NAME,
   PORT,
   BCRYPT_WORK_FACTOR,
   getDatabaseUri,
