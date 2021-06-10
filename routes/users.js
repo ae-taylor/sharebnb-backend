@@ -59,67 +59,47 @@ const router = express.Router();
     const errs = validator.errors.map(e => e.stack);
     throw new BadRequestError(errs);
   }
-  console.log(`got through validator`)
-  const image = req.file;
-  const client = new S3Client({
-    credentials: {
-      accessKeyId: S3_ACCESS_KEY,
-      secretAccessKey: S3_SECRET_KEY,
-    },
-    region: S3_REGION});
 
-    
-    const uploadParams = {
-      Bucket: S3_BUCKET_NAME,
-      Key: `${req.body.username}-profile-pic`,
-      Body: image.buffer,
-      ContentType: 'image/jpeg',
-      Tagging: "public=yes"
-    }
-    
-    
-    console.log(`upload params --->`, uploadParams)
-    
-    const putCommand = new PutObjectCommand(uploadParams);
-    const response = await client.send(putCommand);
-    
-    const getUrlParams = {
-      Bucket: S3_BUCKET_NAME,
-      Key: `${req.body.username}-profile-pic`,
-    }
-
-  const getCommand = new GetObjectCommand(getUrlParams);  
-  const url = await getSignedUrl(client, getCommand);
-
-  console.log(`url from AWS S3---> `, url);
-  console.log(`command --->`, putCommand);
-  console.log(`response -->`, response)
   const {username, password, firstName, lastName, email, phone} = req.body;
   const newUser = await User.register(username, password, firstName, lastName, email, phone);
+  const image = req.file;
+
+  if (newUser && image) {
+    const client = new S3Client({
+      credentials: {
+        accessKeyId: S3_ACCESS_KEY,
+        secretAccessKey: S3_SECRET_KEY,
+      },
+      region: S3_REGION});
+  
+      
+      const uploadParams = {
+        Bucket: S3_BUCKET_NAME,
+        Key: `${req.body.username}-profile-pic`,
+        Body: image.buffer,
+        ContentType: 'image/jpeg',
+        Tagging: "public=yes"
+      }
+      
+      
+      console.log(`upload params --->`, uploadParams)
+      
+      const putCommand = new PutObjectCommand(uploadParams);
+      const response = await client.send(putCommand);
+      
+      const getUrlParams = {
+        Bucket: S3_BUCKET_NAME,
+        Key: `${req.body.username}-profile-pic`,
+      }
+  
+    const getCommand = new GetObjectCommand(getUrlParams);  
+    const imageUrl = await getSignedUrl(client, getCommand);
+    await User.addProfileImg(imageUrl, username);
+  }
+
   const token = createToken(newUser);
   console.log("CREATED NEW USER");
   return res.status(201).json({ token });
 });
-
-// router.post("/image", upload.single('file'), async function (req, res, next) {
-//   const image = req.file;
-//   const client = new S3Client({
-//     credentials: {
-//       accessKeyId: S3_ACCESS_KEY,
-//       secretAccessKey: S3_SECRET_KEY,
-//     },
-//     region: "us-west-2"});
-
-//   const uploadParams = {
-//     Bucket: "sharebnb-aa",
-//     Key: `${req.body.username}-profile-pic`,
-//     Body: image.buffer,
-//     Tagging: "public=yes"
-//   }
-
-//   const command = new PutObjectCommand(uploadParams);
-//   const response = await client.send(command);
-//   console.log("IMAGE UPLOAD RESPONSE", response);
-// })
 
 module.exports = router;
