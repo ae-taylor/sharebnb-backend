@@ -14,7 +14,7 @@ const router = express.Router();
 /** POST /listings  { host_username, title, description, price } => { listing }
  *
  *
- * Authorization required: none
+ * Authorization required: ensureLoggedIn
  */
 
  router.post("/", async function (req, res, next) {
@@ -29,6 +29,25 @@ const router = express.Router();
   const listing = await Listing.addListing(host_username, title, description, price);
 
   return res.json({ listing });
+});
+
+/** GET /listings 
+ * 
+ * Authorization: none
+ */
+
+router.get("/", async function (req, res, next) {
+  console.log("MADE IT TO GET LISTINGS");
+  const listings = await Listing.getListings();
+  console.log("LISTINGS IN LISTINGS.JS--->", listings);
+  return res.json({listings});
+});
+
+router.get("/:id", async function (req, res, next) {
+  console.log("MADE IT TO GET LISTING");
+  const listing = await Listing.getListing(req.params.id);
+  console.log("LISTING IN LISTINGS.JS--->", listing);
+  return res.json({listing});
 });
 
 module.exports = router;
