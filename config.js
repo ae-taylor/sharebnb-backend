@@ -6,6 +6,8 @@ require("dotenv").config();
 require("colors");
 
 const SECRET_KEY = process.env.SECRET_KEY || "secret-dev";
+const S3_ACCESS_KEY = process.env.S3_ACCESS_KEY;
+const S3_SECRET_KEY = process.env.S3_SECRET_KEY;
 
 const PORT = +process.env.PORT || 3001;
 
@@ -30,6 +32,8 @@ console.log("---");
 
 module.exports = {
   SECRET_KEY,
+  S3_ACCESS_KEY,
+  S3_SECRET_KEY,
   PORT,
   BCRYPT_WORK_FACTOR,
   getDatabaseUri,
