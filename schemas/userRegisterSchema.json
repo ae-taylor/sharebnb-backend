@@ -36,6 +36,9 @@
       },
       "image": {
         "type": "string"
+      },
+      "file": {
+        "type": "string"
       }
     },
     "additionalProperties": false,

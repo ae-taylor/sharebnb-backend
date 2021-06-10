@@ -93,6 +93,27 @@ class User {
 
     return user;
   }
+
+  static async getUser(username) {
+    const result = await db.query(
+          `SELECT username,
+                  password,
+                  first_name AS "firstName",
+                  last_name AS "lastName",
+                  email,
+                  phone
+           FROM users
+           WHERE username = $1`,
+        [username],
+    );
+
+    const user = result.rows[0];
+
+    if (user) {
+      return { user }
+    }
+  }
+
 }
 
 module.exports = User;

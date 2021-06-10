@@ -94,12 +94,17 @@ const router = express.Router();
   
     const getCommand = new GetObjectCommand(getUrlParams);  
     const imageUrl = await getSignedUrl(client, getCommand);
-    await User.addProfileImg(imageUrl, username);
+    // await User.addProfileImg(imageUrl, username);
   }
 
   const token = createToken(newUser);
   console.log("CREATED NEW USER");
   return res.status(201).json({ token });
 });
+
+router.get("/:username", async function (req, res, next) {
+  let user = User.getUser(req.params.username);
+  return res.json({user});
+})
 
 module.exports = router;
