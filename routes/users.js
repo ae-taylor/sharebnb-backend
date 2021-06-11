@@ -87,15 +87,25 @@ const router = express.Router();
       
       const putCommand = new PutObjectCommand(uploadParams);
       const response = await client.send(putCommand);
-      
-      const getUrlParams = {
-        Bucket: S3_BUCKET_NAME,
-        Key: `${req.body.username}-profile-pic`,
+      // console.log("RESPONSE IMAGE UPLOAD--->", response);
+      // if response successful, generate URL to store in DB
+      // call method on user class that updates user profile image with generated URL
+      if (response.$metadata.httpStatusCode === 200) {
+        let profileImgUrl = `https://${S3_BUCKET_NAME}.s3.${S3_REGION}.amazonaws.com/${req.body.username}-profile-pic`;
+        await User.updateUserImgUrl(profileImgUrl, req.body.username);
       }
+      
+      // https://sharebnb-aa.s3.us-west-2.amazonaws.com/testuser1-profile-pic
+      
+      
+    //   const getUrlParams = {
+    //     Bucket: S3_BUCKET_NAME,
+    //     Key: `${req.body.username}-profile-pic`,
+    //   }
   
-    const getCommand = new GetObjectCommand(getUrlParams);  
-    const imageUrl = await getSignedUrl(client, getCommand);
-    // await User.addProfileImg(imageUrl, username);
+    // const getCommand = new GetObjectCommand(getUrlParams);  
+    // const imageUrl = await getSignedUrl(client, getCommand);
+    // // await User.addProfileImg(imageUrl, username);
   }
 
   const token = createToken(newUser);

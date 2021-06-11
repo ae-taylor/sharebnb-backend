@@ -5,7 +5,8 @@ CREATE TABLE users (
   last_name VARCHAR(25) NOT NULL,
   email VARCHAR(50) NOT NULL CHECK 
     (position('@' IN email) > 1),
-  phone VARCHAR(15) NOT NULL
+  phone VARCHAR(15) NOT NULL,
+  image_url TEXT
 );
 
 CREATE TABLE hosts (

@@ -76,8 +76,9 @@ class User {
             first_name,
             last_name,
             email,
-            phone)
-           VALUES ($1, $2, $3, $4, $5, $6)
+            phone, 
+            image_url)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)
            RETURNING username, first_name AS "firstName", last_name AS "lastName", email, phone`,
         [
           username,
@@ -86,12 +87,23 @@ class User {
           lastName,
           email,
           phone,
+          DEFAULT_IMAGE_URL
         ],
     );
 
     const user = result.rows[0];
 
     return user;
+  }
+
+  static async updateUserImgUrl( imageUrl, username ) {
+       await db.query(
+      `UPDATE users 
+        SET image_url = $1
+        WHERE username = $2`, 
+        [imageUrl, username]
+    );
+
   }
 
   static async getUser(username) {
