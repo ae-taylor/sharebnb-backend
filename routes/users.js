@@ -64,6 +64,7 @@ const router = express.Router();
   const newUser = await User.register(username, password, firstName, lastName, email, phone);
   const image = req.file;
 
+  console.log(`New user and image from BACKEND USERS/REGISTER-->`, newUser, image)
   if (newUser && image) {
     const client = new S3Client({
       credentials: {
