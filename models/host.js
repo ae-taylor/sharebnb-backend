@@ -12,6 +12,7 @@ class Host {
        WHERE host_username = $1`,
     [username],
     );
+    
     if (duplicateCheck.length < 1) {
       `INSERT INTO hosts (username) 
         VALUES ($1)`,

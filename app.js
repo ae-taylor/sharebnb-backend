@@ -1,24 +1,21 @@
 "use strict";
 
-/** Express app for jobly. */
+/** Express app for ShareBnB. */
 
 const express = require("express");
 const cors = require("cors");
 
 const { NotFoundError } = require("./expressError");
 
+//TODO - utilize auth middleware
 // const { authenticateJWT } = require("./middleware/auth");
 const listingsRoutes = require("./routes/listings");
 const usersRoutes = require("./routes/users");
-
-// const morgan = require("morgan");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-// app.use(morgan("tiny"));
-// app.use(authenticateJWT);
 
 app.use("/listings", listingsRoutes);
 app.use("/users", usersRoutes);

@@ -15,7 +15,7 @@ const DEFAULT_IMAGE_URL = "https://cdn.business2community.com/wp-content/uploads
 class User {
   /** authenticate user with username, password.
    *
-   * Returns { username, first_name, last_name, email, is_admin }
+   * Returns { username, first_name, last_name, email, phone }
    *
    * Throws UnauthorizedError is user not found or wrong password.
    **/
@@ -50,12 +50,17 @@ class User {
 
   /** Register user with data.
    *
-   * Returns { username, firstName, lastName, email, isAdmin }
+   * Returns { username, firstName, lastName, email, phone }
    *
    * Throws BadRequestError on duplicates.
    **/
 
-  static async register( username, password, firstName, lastName, email, phone ) {
+  static async register( username, 
+                        password, 
+                        firstName, 
+                        lastName, 
+                        email, 
+                        phone ) {
     const duplicateCheck = await db.query(
           `SELECT username
            FROM users
@@ -79,7 +84,11 @@ class User {
             phone, 
             image_url)
            VALUES ($1, $2, $3, $4, $5, $6, $7)
-           RETURNING username, first_name AS "firstName", last_name AS "lastName", email, phone`,
+           RETURNING username, 
+                      first_name AS "firstName", 
+                      last_name AS "lastName", 
+                      email, 
+                      phone`,
         [
           username,
           hashedPassword,
@@ -96,6 +105,9 @@ class User {
     return user;
   }
 
+  /** If user provided image file on signup, update
+   * image_url in DB to url of image stored in S3
+   */
   static async updateUserImgUrl( imageUrl, username ) {
        await db.query(
       `UPDATE users 
@@ -106,6 +118,7 @@ class User {
 
   }
 
+  /** Get user by username */
   static async getUser(username) {
     const result = await db.query(
           `SELECT username,

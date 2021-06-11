@@ -15,6 +15,7 @@ const router = express.Router();
  *
  *
  * Authorization required: ensureLoggedIn
+ * //TODO ^ Implement auth middleware
  */
 
  router.post("/", async function (req, res, next) {
@@ -33,6 +34,8 @@ const router = express.Router();
 
 /** GET /listings 
  * 
+ * gets all listings & returns listings object
+ * 
  * Authorization: none
  */
 
@@ -43,6 +46,12 @@ router.get("/", async function (req, res, next) {
   return res.json({listings});
 });
 
+/** GET /listings/:id 
+ * 
+ * Gets listing by ID and returns listing object
+ * 
+ * Authorization: none
+ */
 router.get("/:id", async function (req, res, next) {
   console.log("MADE IT TO GET LISTING");
   const listing = await Listing.getListing(req.params.id);

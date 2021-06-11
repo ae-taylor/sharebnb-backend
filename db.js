@@ -1,6 +1,6 @@
 "use strict";
 
-/** Database setup for jobly. */
+/** Database setup for ShareBnB. */
 
 const { Client } = require("pg");
 const { getDatabaseUri } = require("./config");

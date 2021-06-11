@@ -3,6 +3,8 @@
 const db = require("../db");
 
 class Listing {
+  //TODO - add photos to listing & store in S3 with 
+  // photo URLS stored in DB
   /** Method addListing
    * 
    * Receives: {host_username, title, description, price}
@@ -21,6 +23,8 @@ class Listing {
     return newListing;
   }
 
+  //TODO - add search functionality
+  /** Gets all listings */
   static async getListings() {
     const result = await db.query(
       `SELECT id, host_username, title, description, price
@@ -32,6 +36,7 @@ class Listing {
     return listings;
   }
 
+  /** Gets specific listing by listing id */
   static async getListing(id) {
     const result = await db.query(
       `SELECT id, host_username, title, description, price
